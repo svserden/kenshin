@@ -1,0 +1,76 @@
+{\rtf1\ansi\ansicpg1254\cocoartf2759
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 .SFNS-Regular_wdth_opsz180000_GRAD_wght2580000;\f1\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red224\green232\blue240;\red12\green14\blue18;\red0\green0\blue0;
+}
+{\*\expandedcolortbl;;\cssrgb\c90196\c92941\c95294;\cssrgb\c5098\c6667\c9020;\cssrgb\c0\c0\c0;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa320\partightenfactor0
+
+\f0\b\fs48 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Elixir\
+Neden kuruyorum?\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs32 \cf0 \cb3 \strokec4 Maliyet harcam\uc0\u305 yorum, hali haz\u305 rda olan sunucular\u305 ma yerle\u351 tirdim node'u\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3 Donan\uc0\u305 m olduk\'e7a d\'fc\u351 \'fck\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3 \'d6d\'fcl a\'e7\uc0\u305 klamas\u305  yok ama bekliyorum \u351 ahsen.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3 Son olarak metriklerdeki validat\'f6r say\uc0\u305 lar\u305 n\u305 n ger\'e7ek olmad\u305 \u287 \u305 ndan eminim.\cb1 \
+\pard\pardeftab720\sa320\partightenfactor0
+
+\f0\b\fs48 \cf2 \cb3 \strokec2 Donan\uc0\u305 m\
+1 vCPU  - 2 RAM - 30 GB SSD, Ubuntu\
+Kurulum\
+# cihaz g\'fcncelleme\
+sudo apt update -y && sudo apt upgrade -y\
+\
+# docker kurulumu\
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done\
+\
+\
+sudo apt-get update\
+sudo apt-get install ca-certificates curl gnupg\
+sudo install -m 0755 -d /etc/apt/keyrings\
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg\
+sudo chmod a+r /etc/apt/keyrings/docker.gpg\
+\
+# Tek komut\
+echo \\\
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \\\
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \\\
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null\
+\
+sudo apt-get update\
+\
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\
+sudo docker run hello-world\
+# Dockerfile indirelim:\
+wget https://files.elixir.finance/Dockerfile\
+# Bu a\uc0\u351 amada H\u304 \'c7 kullan\u305 lmam\u305 \u351  ve kullanmayaca\u287 \u305 m\u305 z bir metamask account olu\u351 tural\u305 m.\
+\
+# i\'e7ersine girelim\
+nano Dockerfile\
+# \uc0\u304 \'e7ersinde ki Validat\'f6r ismi, private key ve c\'fczdan adresi g\'fcncelleyelim.\
+\
+# Tilkimask Private key alma: Sa\uc0\u287 dan \'fc\'e7 nokta => Hesap bilgileri => \'d6zel anahtar\u305  al\
+# Bilgilerimizi doldurduktan sonra sunucumuzda CTRL X Y ENTER ile kaydedebiliriz.\
+# image olu\uc0\u351 tural\u305 m:\
+docker build . -f Dockerfile -t elixir-validator\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs32 \cf0 \cb3 \strokec4 Son olarak\'a0{\field{\*\fldinst{HYPERLINK "https://dashboard.elixir.finance/"}}{\fldrslt \cb3 \ul \strokec4 Buradan}}\'a0c\'fczdan\uc0\u305 n\u305 z\u305  ba\u287 lay\u305 n ve 1000 elixir token claim edin.\cb1 \
+\cb3 Sonra min. 100 token olmak uzere stake edin b\uc0\u305 r k\u305 sm\u305 n\u305  ve son olarak Enroll diyerek validat\'f6r ba\u351 lat\u305 yoruz.\cb1 \
+\cb3 A\uc0\u351 a\u287 \u305 da twitter ve discord ba\u287 layarak rol\'fcn\'fcz\'fcde almay\u305  unutmay\u305 n.\cb1 \
+\cb3 Ledearboardda c\'fczdan aratarak node'unuzu g\'f6rebilirsiniz fakat \uc0\u351 u an pek \'e7al\u305 \u351 t\u305 \u287 \u305  s\'f6ylenemez.\cb1 \
+\cb3 \strokec4 Ayn\uc0\u305  zamanda metrics k\u305 sm\u305 da \'e7al\u305 \u351 m\u305 yor d\'fczeltirler yak\u305 nda takip ederiz.\cb1 \strokec4 \
+\pard\pardeftab720\sa320\partightenfactor0
+
+\f0\b\fs48 \cf2 \cb3 \strokec2 # Node cal\uc0\u305 \u351 t\u305 rma:\
+screen -S elixir\
+docker run -it --name ev elixir-validator\
+}
